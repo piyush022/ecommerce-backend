@@ -159,6 +159,34 @@ async function approveOrder(req, res) {
   }
 }
 
+async function getOrders(req, res) {
+  try {
+    const data = await orderModel.aggregate([
+      {
+        $lookup: {
+          from: "users",
+          localField: "user",
+          foreignField: "_id",
+          as: "userData",
+        },
+      },
+      {
+        $lookup: {
+          from: "products",
+          localField: "products",
+          foreignField: "_id",
+          as: "orderedProduct",
+        },
+      },
+    ]);
+    if (data.length) {
+      res.status(200).json({ success: true, data: data, msg: "orders found" });
+    }
+  } catch (err) {
+    res.status(400).json({ success: false, msg: err.message });
+  }
+}
+
 module.exports = {
   insertadmin,
   updateadmin,
@@ -166,4 +194,5 @@ module.exports = {
   getadmin,
   approvalManage,
   approveOrder,
+  getOrders,
 };

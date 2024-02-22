@@ -10,8 +10,8 @@ const userSchema = schema(
     password: { type: String, required: true },
     approved: { type: Boolean, default: false },
     wishlist: [mongoose.Schema.Types.ObjectId],
-    latitude: { type: String, required: true },
-    longitude: { type: String, required: true },
+    latitude: { type: String },
+    longitude: { type: String },
   },
   { timestamps: true }
 );
